@@ -1,14 +1,24 @@
 const db = require("../models/workout.js");
 
+const path = require('path');
+
 const router = require('express').Router();
 
-db.create({ name: "Campus Library" })
-  .then(dbLibrary => {
-    console.log(dbWorkout);
-  })
-  .catch(({message}) => {
-    console.log(message);
-  });
+// db.create({ name: {} })
+//   .then(dbWorkout => {
+//     console.log(dbWorkout);
+//   })
+//   .catch(({message}) => {
+//     console.log(message);
+//   });
+
+router.get("/exercise", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/exercise.html"));
+});
+
+router.get('/stats', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/stats.html"));
+})
 
 router.post("/api/workouts", ({body}, res) => {
     db.create({})
@@ -21,8 +31,10 @@ router.post("/api/workouts", ({body}, res) => {
 });
 
 router.get("/api/workouts", (req, res) => {
+  console.log("We are in the route");
   db.find({})
     .then(dbWorkout => {
+      console.log(dbWorkout)
       res.json(dbWorkout);
     })
     .catch(err => {
@@ -53,4 +65,4 @@ router.put(`/api/workouts/:id`, ({body, params}, res) => {
     });
 
 
-
+module.exports = router;
